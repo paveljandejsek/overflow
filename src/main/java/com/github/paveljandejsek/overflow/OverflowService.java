@@ -8,19 +8,24 @@ import java.util.List;
 @Slf4j
 @Service
 public class OverflowService {
-    public OverflowResult calculateOverflow(int inputFlow, List<Integer> tankCapacities) {
-        log.info("Calculating overflow");
-        log.atDebug().log("inputFlow: {}, tankCapacities: {}", inputFlow, tankCapacities);
+    public OverflowResult calculateOverflow(FlowSpecification flowSpecification, List<Integer> tankCapacities) {
+        log.atInfo().log("Calculating overflow");
+        log.atDebug().log("flow specification: {}, tankCapacities: {}", flowSpecification, tankCapacities);
 
+        int inputFlow = flowSpecification.inputFlow();
+        double allFullTime = getMaxFullTime(tankCapacities, inputFlow);
 
         int lastSmallestTankIndex = getLastSmallestTankIndex(tankCapacities);
-        int allFull = (int)Math.floor(getMaxFullTime(tankCapacities, inputFlow));     // incident (2)
-
+        log.atDebug().log("smallest last tank index: {}", lastSmallestTankIndex);
         List<Integer> lastTankRelevantSizes = tankCapacities.subList(lastSmallestTankIndex, tankCapacities.size());
         double lastOverflow = getMaxFullTime(lastTankRelevantSizes, inputFlow);
-        int lastOverflowRounded = (int)Math.floor(lastOverflow);   // incident (1)
 
-        return new OverflowResult(lastOverflowRounded, allFull);
+        int lastOverflowRounded = (int)Math.floor(lastOverflow);
+        int allFullRounded = (int)Math.floor(allFullTime);
+
+        log.atInfo().log("Last overflow rounded: {}", lastOverflowRounded);
+        log.atInfo().log("All overflow rounded: {}", allFullRounded);
+        return new OverflowResult(lastOverflowRounded, allFullRounded);
     }
 
     private double getMaxFullTime(List<Integer> tankCapacities, int inputFlow) {
@@ -31,9 +36,11 @@ public class OverflowService {
 
         double previousTankTime = (double) tankCapacities.getFirst() / inputFlow;
         double maxFullTime = previousTankTime;
+        log.atDebug().log("tankIndex: {}, tankFillTime: {}", 0, previousTankTime);
 
         for (int tankIndex = 1; tankIndex < tankCapacities.size(); tankIndex++) {
             double tankFillTime = ((double) tankCapacities.get(tankIndex) + (double) tankIndex * inputFlow * previousTankTime) / ((double) (tankIndex + 1) * inputFlow);
+            log.atDebug().log("tankIndex: {}, tankFillTime: {}", tankIndex, tankFillTime);
             if (tankFillTime > maxFullTime) maxFullTime = tankFillTime;
             previousTankTime = tankFillTime;
         }
