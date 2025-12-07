@@ -50,6 +50,9 @@ Moving the hardcode to some parameter for the methods in InputService would be a
 Since this is currently built as a command line tool, it would be beneficial to have at least supported args of "--version" and "--help", 
 with some small documentation being displayed about the application.
 
+#### Comments/logging
+The code could also probably benefit from one more pass regarding logging and maybe some "why" comments as well...
+
 #### Different computational method
 The code itself does the computation using a "simple" equation since nothing else was asked in the assignment.  
 If however there would be a need for more complex scenarios, comparisons, visualizations, need to take a look at the state in different times of the flow etc.   
