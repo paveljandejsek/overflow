@@ -1,3 +1,5 @@
+[![Build + Test](https://github.com/paveljandejsek/overflow/actions/workflows/maven.yml/badge.svg)](https://github.com/paveljandejsek/overflow/actions/workflows/maven.yml)
+
 # Glowing and Flowing
 
 ## Tech info
