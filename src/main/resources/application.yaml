@@ -3,4 +3,4 @@ spring:
     name: overflow
 logging:
   level:
-    com.github.paveljandejsek.overflow: debug
+    com.github.paveljandejsek.overflow: warn
